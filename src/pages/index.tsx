@@ -7,19 +7,19 @@ import fetchBooks from "@/lib/fetchBooks";
 import fetchRandomBooks from "@/lib/fetchRandomBooks";
 
 /**
- * 1. 약속된 getServerSideProps 함수를 export 함으로써 해당 페이지는 서버사이드 렌더링이 가능하다
- * 2. 오직 Server Side에서만 실행되는 함수로, 단 한번 호출되며 브라우져를 새로고침하여도 재실행 되지 않는다.
- * 3. 해당 페이지의 컴포넌트보다 먼저 실행되어서, 필요한 데이터를 API 통신으로 부터 가져올 수 있다.
+ * ISR (Incremental Static Regeneration) - 증분 정적 재생성 방식
+ * - SSG 방식으로 생성된 정적 페이지를 일정 시간을 주기로 다시 생성하는 기술
  */
 export const getStaticProps = async () => {
-  console.log("SSG - 인덱스 페이지");
-
   const [allBooks, recommendBooks] = await Promise.all([
     fetchBooks(),
     fetchRandomBooks(),
   ]);
 
-  // 반드시 props 형태로 객체를 반환해야한다.
+  /**
+   * props: 반드시 props 형태로 객체를 반환해야한다.
+   * revalidate: ISR 재검증 시간 주기 옵션
+   */
   return {
     props: {
       allBooks,
