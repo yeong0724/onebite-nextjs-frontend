@@ -1,32 +1,31 @@
-import { ReactNode } from "react";
-import { GetServerSidePropsContext, InferGetStaticPropsType } from "next";
+import { ReactNode, useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { BookData } from "@/types";
 import SearchableLayout from "@/components/SearchableLayout";
 import BookItem from "@/components/BookItem";
 import fetchBooks from "@/lib/fetchBooks";
 
-/**
- * @param context - 현재 브라우저로부터 받은 요청에 대한 모든 정보가 담긴 객체
- */
-export const getServerSideProps = async (
-  context: GetServerSidePropsContext
-) => {
-  const { q = "" } = context.query as { q?: string };
-  const searchBooks = await fetchBooks(q);
+export default function Search() {
+  const [books, setBooks] = useState<BookData[]>([]);
 
-  return {
-    props: {
-      searchBooks,
-    }, // 빈 객체를 반환하여 페이지 컴포넌트에 전달
+  const router = useRouter();
+  const { q } = router?.query ?? ({} as { q?: string });
+
+  const fetchSearchResult = async () => {
+    const data = await fetchBooks(q as string);
+    setBooks(data);
   };
-};
 
-export default function Search({
-  searchBooks,
-}: InferGetStaticPropsType<typeof getServerSideProps>) {
+  useEffect(() => {
+    if (q) {
+      fetchSearchResult();
+    }
+  }, [q]);
+
   // 상태, 로직
   return (
     <div>
-      {searchBooks.map((book) => (
+      {books.map((book) => (
         <BookItem key={book.id} {...book} />
       ))}
     </div>
