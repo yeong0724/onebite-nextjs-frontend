@@ -7,6 +7,11 @@ export default async function fetchOneBook(
 
   try {
     const response = await fetch(url);
+
+    if (!response.ok) {
+      throw new Error();
+    }
+
     return await response.json();
   } catch (err) {
     console.error(err);
