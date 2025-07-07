@@ -4,6 +4,7 @@ import { BookData } from "@/types";
 import SearchableLayout from "@/components/SearchableLayout";
 import BookItem from "@/components/BookItem";
 import fetchBooks from "@/lib/fetchBooks";
+import Head from "next/head";
 
 export default function Search() {
   const [books, setBooks] = useState<BookData[]>([]);
@@ -25,6 +26,15 @@ export default function Search() {
   // 상태, 로직
   return (
     <div>
+      <Head>
+        <title>Onebite Books - 검섹 결과</title>
+        <meta property="og:image" content="/thumbnail.png" />
+        <meta property="og:title" content="Onebite Books" />
+        <meta
+          property="og:description"
+          content="한입 북스에 등록된 도서들을 만나보세요."
+        />
+      </Head>
       {books.map((book) => (
         <BookItem key={book.id} {...book} />
       ))}

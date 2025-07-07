@@ -1,10 +1,10 @@
-import { useEffect } from "react";
 import { InferGetStaticPropsType } from "next";
 import SearchableLayout from "@/components/SearchableLayout";
 import BookItem from "@/components/BookItem";
 import style from "@/pages/index.module.css";
 import fetchBooks from "@/lib/fetchBooks";
 import fetchRandomBooks from "@/lib/fetchRandomBooks";
+import Head from "next/head";
 
 /**
  * ISR (Incremental Static Regeneration) - 증분 정적 재생성 방식
@@ -32,29 +32,32 @@ export default function Home({
   allBooks,
   recommendBooks,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
-  /**
-   * Next.js는 페이지를 서버에서 먼저 렌더링한 후 클라이언트로 전송
-   * Node.js 서버 환경에서는 window가 정의되지 않기 때문에 undefined 에러가 발생한다.
-   */
-  // console.log("window.location:", window.location);
-
-  useEffect(() => {}, []);
-
   return (
-    <div className={style.container}>
-      <section>
-        <h3>지금 추천하는 도서</h3>
-        {recommendBooks.map((book) => (
-          <BookItem key={book.id} {...book} />
-        ))}
-      </section>
-      <section>
-        <h3>등록된 모든 도서</h3>
-        {allBooks.map((book) => (
-          <BookItem key={book.id} {...book} />
-        ))}
-      </section>
-    </div>
+    <>
+      <Head>
+        <title>Onebite Books</title>
+        <meta property="og:image" content="/thumbnail.png" />
+        <meta property="og:title" content="Onebite Books" />
+        <meta
+          property="og:description"
+          content="한입 북스에 등록된 도서들을 만나보세요."
+        />
+      </Head>
+      <div className={style.container}>
+        <section>
+          <h3>지금 추천하는 도서</h3>
+          {recommendBooks.map((book) => (
+            <BookItem key={book.id} {...book} />
+          ))}
+        </section>
+        <section>
+          <h3>등록된 모든 도서</h3>
+          {allBooks.map((book) => (
+            <BookItem key={book.id} {...book} />
+          ))}
+        </section>
+      </div>
+    </>
   );
 }
 
