@@ -25,7 +25,6 @@ export const getStaticProps = async () => {
       allBooks,
       recommendBooks,
     },
-    revalidate: 3, // 3s 마다 페이지를 재생성
   };
 };
 
