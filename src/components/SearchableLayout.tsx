@@ -10,19 +10,19 @@ export default function SearchableLayout({ children }: SearchableLayoutProps) {
   const router = useRouter();
   const [search, setSearch] = useState("");
 
-  const { keyword = "" } = router.query as { keyword?: string };
+  const { q = "" } = router.query as { q?: string };
 
   useEffect(() => {
-    setSearch(keyword || "");
-  }, [keyword]);
+    setSearch(q || "");
+  }, [q]);
 
   const onChangeSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(e.target.value);
   };
 
   const onSubmit = () => {
-    if (!search || keyword === search) return;
-    router.push(`/search?keyword=${search}`);
+    if (!search || q === search) return;
+    router.push(`/search?q=${search}`);
   };
 
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
